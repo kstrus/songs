@@ -1,15 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { selectSong } from '../actions';
 
 class SongsList extends React.Component {
     render() {
-        const { songsList, onSongSelect } = this.props;
+        const { songsList } = this.props;
+
         const list = songsList.map((song, i) => {
             return (
                 <div className="item" key={i}>
                     <div className="right floated content">
-                        <button className="ui button primary" onClick={() => { onSongSelect(song); }}>
+                        <button className="ui button primary" onClick={() => this.props.selectSong(song)}>
                             Select
                         </button>
                     </div>
@@ -24,11 +26,14 @@ class SongsList extends React.Component {
 
 SongsList.propTypes = {
     songsList: PropTypes.array,
-    onSongSelect: PropTypes.func
+    selectSong: PropTypes.func
 };
 
 const mapStateToProps = (state) => {
     return { songsList: state.songsList };
 };
 
-export default connect(mapStateToProps)(SongsList);
+export default connect(
+    mapStateToProps,
+    { selectSong: selectSong }
+)(SongsList);
